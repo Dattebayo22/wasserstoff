@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <title>SpaceX</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="topic">SpaceX Launches</h1>
+    <!--form to take input form the user for search and the filters-->
+    <form id="filterForm">
+        <label for="startYearInput">Start Year:</label>
+        <input type="number" id="startY" name="starting_year_filter" value="{{ starting_year_filter }}">
+        
+        <label for="endYearInput">End Year:</label>
+        <input type="number" id="endY" name="ending_year_filter" value="{{ ending_year_filter }}">
+
+        <label for="launchSuccessInput">Launch Success:</label>
+        <select id="launchSuccessInput" name="launch_success_filter">
+            <option value="">Any</option>
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="manufacturer_filter">Manufacturer:</label>
+        <input type="text" id="manufacturer_filter" name="manufacturer_filter" value="{{ manufacturer_filter }}">
+
+        <label for="searchInput">Search:</label>
+        <input type="text" id="searchInput" name="search" value="{{ search_filter }}">
+
+    <!--on submission submitForm() function is called-->
+        <button type="button" onclick="submitForm()">Filter</button>
+    </form>
+
+    <!--created a table to display the filtered response-->
+    <div id="filteredData">
+        <table>
+            <thead>
+                <tr>
+                    <th>Flight Number</th>
+                    <th>Mission Name</th>
+                    <th>Launch Year</th>
+                    <th>Rocket Name</th>
+                    <th>Manufacturer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for launch in launches %}
+                    <tr>
+                        <td>{{ launch.flight_number }}</td>
+                        <td>{{ launch.mission_name }}</td>
+                        <td>{{ launch.launch_year }}</td>
+                        <td>{{ launch.rocket_name }}</td>
+                        <td>{{ launch.manufacturer }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+    </div>
+
+    <script>
+        function submitForm() {
+            var searchValue = document.getElementById("searchInput").value;
+            var startYearValue = document.getElementById("startY").value;
+            var endYearValue = document.getElementById("endY").value;
+            var launchSuccessValue = document.getElementById("launchSuccessInput").value;
+            var manufacturerQueryValue = document.getElementById("manufacturer_filter").value;
+        
+            // update the current url
+            var url = window.location.pathname +
+                      '?search=' + encodeURIComponent(searchValue) +
+                      '&starting_year_filter=' + encodeURIComponent(startYearValue) +
+                      '&ending_year_filter=' + encodeURIComponent(endYearValue) +
+                      '&launch_success_filter=' + encodeURIComponent(launchSuccessValue)+
+                      '&manufacturer_filter=' + encodeURIComponent(manufacturerQueryValue);
+        
+            // redirect the user to the updated URL
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
